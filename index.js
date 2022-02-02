@@ -45,11 +45,6 @@ console.log('Started scraping on', moment().format('LLLL'))
   })
 
   await browser.close()
-})()
-console.log('Scraped on', moment().format('LLLL'))
 
-//this does nothing except tell now we're alive
-const port = process.env.PORT || 2345
-app.listen(port, function () {
-  console.log('Listening on port:', port)
-})
+  console.log('Scraped on', moment().format('LLLL'))
+})()
