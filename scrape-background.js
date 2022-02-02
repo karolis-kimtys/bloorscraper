@@ -7,7 +7,7 @@ const moment = require('moment')
 require('dotenv').config()
 
 console.log('Started scraping on', moment().format('LLLL'))
-
+//Nice
 const job = new CronJob({
   cronTime: '*/1 * * * *',
   onTick: function () {
