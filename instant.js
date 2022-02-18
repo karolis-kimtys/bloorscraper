@@ -1,5 +1,6 @@
 const puppeteer = require('puppeteer')
 const nodemailer = require('nodemailer')
+const moment = require('moment')
 require('dotenv').config()
 
 const list = {
@@ -36,9 +37,10 @@ async function getData(link) {
   })
 
   const page = await browser.newPage()
-  await page.goto(link, {
-    waitUntil: 'networkidle2'
-  })
+
+  await page.setDefaultNavigationTimeout(0)
+
+  await page.goto(link)
 
   const title = await page.evaluate(() =>
     Array.from(
@@ -101,7 +103,7 @@ const run = async () => {
     if (error) {
       console.log('Error', error)
     } else {
-      console.log('Email sent: ' + info.response)
+      console.log('Email sent: ' + moment().format('LLLL') + info.response)
     }
   })
 }
