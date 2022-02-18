@@ -32,7 +32,7 @@ async function getData(link) {
 
   browser = await puppeteer.launch({
     executablePath: revisionInfo.executablePath,
-    headless: true,
+    headless: false,
     args: ['--no-sandbox', '--disabled-setupid-sandbox']
   })
 
