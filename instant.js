@@ -28,13 +28,23 @@ let data = []
 
 console.log('Starting browser')
 
+// System.setProperty(
+//   'webdriver.chrome.driver',
+//   '/node_modules/chromedriver/lib/chromedriver/chromedriver'
+// )
+
 async function getData(link) {
   browser = await puppeteer.launch({
-    dumpio: true,
+    // dumpio: true,
+    ignoreHTTPSErrors: true,
     args: ['--no-sandbox', '--disabled-setuid-sandbox', '--disable-gpu']
   })
 
   const page = await browser.newPage()
+
+  const session = await page.target().createCDPSession()
+  await session.send('Page.enable')
+  await session.send('Page.setWebLifecycleState', { state: 'active' })
 
   // await page.setDefaultNavigationTimeout(0)
 
@@ -42,8 +52,6 @@ async function getData(link) {
     waitUntil: 'load',
     timeout: 0
   })
-
-  await page.waitFor(1000)
 
   const title = await page.evaluate(() =>
     Array.from(
