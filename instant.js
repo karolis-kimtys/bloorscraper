@@ -35,7 +35,7 @@ console.log('Starting browser')
 
 async function getData(link) {
   browser = await puppeteer.launch({
-    // dumpio: true,
+    dumpio: true,
     ignoreHTTPSErrors: true,
     args: ['--no-sandbox', '--disabled-setuid-sandbox', '--disable-gpu']
   })
