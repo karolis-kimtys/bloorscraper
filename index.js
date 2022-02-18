@@ -1,10 +1,10 @@
-puppeteer = require('puppeteer-core')
-require('dotenv').config()
+const puppeteer = require('puppeteer-core')
 const nodemailer = require('nodemailer')
 const express = require('express')
 const app = express()
 const moment = require('moment')
-var cron = require('node-cron')
+const cron = require('node-cron')
+require('dotenv').config()
 
 console.log('Started scraping on', moment().format('LLLL'))
 ;(async function () {
@@ -36,8 +36,8 @@ console.log('Started scraping on', moment().format('LLLL'))
     var transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
-        user: 'karolis.kimtys@gmail.com',
-        pass: process.env.GOOGLE_PASSWORD
+        user: process.env.EMAIL_USERNAME,
+        pass: process.env.EMAIL_PASSWORD
       }
     })
 

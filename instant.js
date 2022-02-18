@@ -38,6 +38,7 @@ console.log('Starting browser')
 async function getData(link) {
   browser = await puppeteer.launch({
     // dumpio: true,
+    // executablePath: '/usr/bin/chromium-browser',
     args: [
       '--no-sandbox',
       '--disabled-setuid-sandbox',
