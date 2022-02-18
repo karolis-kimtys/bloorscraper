@@ -29,9 +29,6 @@ let data = []
 console.log('Starting browser')
 
 async function getData(link) {
-  // const browserFetcher = puppeteer.createBrowserFetcher()
-  // let revisionInfo = await browserFetcher.download('884014')
-
   browser = await puppeteer.launch({
     args: ['--no-sandbox', '--disable-setuid-sandbox']
   })
@@ -40,7 +37,10 @@ async function getData(link) {
 
   await page.setDefaultNavigationTimeout(0)
 
-  await page.goto(link)
+  await page.goto(link, {
+    waitUntil: 'load',
+    timeout: 0
+  })
 
   const title = await page.evaluate(() =>
     Array.from(
