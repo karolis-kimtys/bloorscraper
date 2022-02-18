@@ -35,7 +35,9 @@ console.log('Started scraping on', moment().format('LLLL'))
 
     var transporter = nodemailer.createTransport({
       service: 'gmail',
+      host: 'smtp.gmail.com',
       auth: {
+        type: 'login',
         user: process.env.EMAIL_USERNAME,
         pass: process.env.EMAIL_PASSWORD
       }
