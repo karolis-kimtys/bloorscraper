@@ -21,7 +21,9 @@ const list = {
   RedKiteView:
     'https://bloorhomes.com/developments/oxfordshire/watlington/red-kite-view',
   WallingfordReach:
-    'https://bloorhomes.com/developments/oxfordshire/crowmarsh-gifford/wallingford-reach'
+    'https://bloorhomes.com/developments/oxfordshire/crowmarsh-gifford/wallingford-reach',
+  OrielGardens:
+    'https://bloorhomes.com/developments/oxfordshire/faringdon/oriel-gardens'
 }
 
 let data = []
@@ -35,22 +37,15 @@ console.log('Starting browser')
 
 async function getData(link) {
   browser = await puppeteer.launch({
-    dumpio: true,
-    ignoreHTTPSErrors: true,
-    args: ['--no-sandbox', '--disabled-setuid-sandbox', '--disable-gpu']
+    // dumpio: true,
+    args: ['--no-sandbox', '--disabled-setuid-sandbox', '--disable-gpu'],
+    timeout: 30000
   })
 
   const page = await browser.newPage()
 
-  const session = await page.target().createCDPSession()
-  await session.send('Page.enable')
-  await session.send('Page.setWebLifecycleState', { state: 'active' })
-
-  // await page.setDefaultNavigationTimeout(0)
-
   await page.goto(link, {
-    waitUntil: 'load',
-    timeout: 0
+    waitUntil: 'networkidle2'
   })
 
   const title = await page.evaluate(() =>
