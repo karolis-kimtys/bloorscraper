@@ -37,9 +37,11 @@ console.log('Started scraping on', moment().format('LLLL'))
       service: 'gmail',
       host: 'smtp.gmail.com',
       auth: {
-        type: 'login',
+        type: 'OAuth2',
         user: process.env.EMAIL_USERNAME,
-        pass: process.env.EMAIL_PASSWORD
+        pass: process.env.EMAIL_PASSWORD,
+        clientId: process.env.CLIENT_ID,
+        clientSecret: process.env.SECRET
       }
     })
 
