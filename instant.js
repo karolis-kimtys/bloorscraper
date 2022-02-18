@@ -33,7 +33,7 @@ async function getData(link) {
   // let revisionInfo = await browserFetcher.download('884014')
 
   browser = await puppeteer.launch({
-    args: ['--use-gl=egl', '--no-sandbox', '--disable-setuid-sandbox']
+    args: ['--no-sandbox', '--disable-setuid-sandbox']
   })
 
   const page = await browser.newPage()
