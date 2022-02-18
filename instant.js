@@ -31,7 +31,7 @@ console.log('Starting browser')
 async function getData(link) {
   browser = await puppeteer.launch({
     dumpio: true,
-    args: ['--no-sandbox', '--disabled-setuid-sandbox']
+    args: ['--no-sandbox', '--disabled-setuid-sandbox', '--disable-gpu']
   })
 
   const page = await browser.newPage()
