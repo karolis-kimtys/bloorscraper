@@ -1,7 +1,6 @@
-puppeteer = require('puppeteer-core')
-require('dotenv').config()
+const puppeteer = require('puppeteer')
 const nodemailer = require('nodemailer')
-var prettyjson = require('prettyjson')
+require('dotenv').config()
 
 const list = {
   TheFairways:
@@ -26,14 +25,13 @@ const list = {
 
 let data = []
 
-async function getData(link) {
-  const browserFetcher = puppeteer.createBrowserFetcher()
-  let revisionInfo = await browserFetcher.download('884014')
+console.log('Starting browser')
 
-  browser = await puppeteer.launch({
-    executablePath: revisionInfo.executablePath,
-    args: ['--no-sandbox', '--disabled-setupid-sandbox', '--use-gl=egl']
-  })
+async function getData(link) {
+  // const browserFetcher = puppeteer.createBrowserFetcher()
+  // let revisionInfo = await browserFetcher.download('884014')
+
+  browser = await puppeteer.launch()
 
   const page = await browser.newPage()
   await page.goto(link, {
