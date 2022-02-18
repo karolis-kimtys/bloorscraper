@@ -30,17 +30,19 @@ console.log('Starting browser')
 
 async function getData(link) {
   browser = await puppeteer.launch({
-    args: ['--no-sandbox', '--disable-setuid-sandbox']
+    args: ['--no-sandbox', '--disabled-setuid-sandbox']
   })
 
   const page = await browser.newPage()
 
-  await page.setDefaultNavigationTimeout(0)
+  // await page.setDefaultNavigationTimeout(0)
 
   await page.goto(link, {
     waitUntil: 'load',
     timeout: 0
   })
+
+  await page.waitFor(1000)
 
   const title = await page.evaluate(() =>
     Array.from(
