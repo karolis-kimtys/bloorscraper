@@ -1,4 +1,4 @@
-const puppeteer = require('puppeteer')
+const puppeteer = require('puppeteer-core')
 const sgMail = require('@sendgrid/mail')
 const cron = require('node-cron')
 const moment = require('moment')
@@ -32,17 +32,13 @@ let data = []
 console.log('Starting browser')
 
 async function getData(link) {
+  const browserFetcher = puppeteer.createBrowserFetcher()
+  let revisionInfo = await browserFetcher.download('884014')
+
   const browser = await puppeteer.launch({
-    // dumpio: true,
-    // executablePath: '/usr/bin/chromium-browser',
-    args: [
-      '--no-sandbox',
-      '--disabled-setuid-sandbox',
-      '--disable-gpu',
-      '--disable-sync',
-      '--ignore-certificate-errors'
-    ],
-    timeout: 30000
+    executablePath: revisionInfo.executablePath,
+    headless: true,
+    args: ['--no-sandbox', '--disabled-setupid-sandbox']
   })
 
   console.log('Cron job started', moment().format('LLLL'))
