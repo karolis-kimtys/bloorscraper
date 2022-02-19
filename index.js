@@ -4,6 +4,7 @@ const express = require('express')
 const app = express()
 const moment = require('moment')
 const cron = require('node-cron')
+const sgMail = require('@sendgrid/mail')
 require('dotenv').config()
 
 console.log('Started scraping on', moment().format('LLLL'))
@@ -31,39 +32,22 @@ console.log('Started scraping on', moment().format('LLLL'))
       (e) => e.outerHTML
     )
 
-    var notes = html.split('"')[1] === 'development-banner__text'
-
-    var transporter = nodemailer.createTransport({
-      service: 'gmail',
-      host: 'smtp.gmail.com',
-      port: 465,
-      secure: true,
-      auth: {
-        type: 'login',
-        user: process.env.EMAIL_USERNAME,
-        pass: process.env.EMAIL_PASSWORD,
-        clientId: process.env.CLIENT_ID,
-        clientSecret: process.env.SECRET
-      }
-    })
-
-    var mailOptions = {
-      from: 'karolis.kimtys@gmail.com',
-      to: 'karolis.kimtys@gmail.com',
-      subject:
-        notes === true
-          ? 'Bloor Homes Ash Green Not Yet Available'
-          : '***Bloor Homes Ash Green Available!!!!',
-      text: moment().format('LLLL')
+    sgMail.setApiKey(process.env.SENDGRID_API_KEY)
+    const msg = {
+      to: 'karolis.kimtys@gmail.com', // Change to your recipient
+      from: 'karolis_k_7@hotmail.com', // Change to your verified sender
+      subject: 'Bloor Homes',
+      text: html,
+      html: `<strong>${moment().format('LLLL')}</strong>`
     }
-
-    transporter.sendMail(mailOptions, function (error, info) {
-      if (error) {
-        console.log('Error', error)
-      } else {
-        console.log('Email sent: ' + info.response)
-      }
-    })
+    sgMail
+      .send(msg)
+      .then(() => {
+        console.log('Email sent')
+      })
+      .catch((error) => {
+        console.error(error)
+      })
 
     await browser.close()
 

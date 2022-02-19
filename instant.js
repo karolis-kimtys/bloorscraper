@@ -1,5 +1,6 @@
 const puppeteer = require('puppeteer')
-const nodemailer = require('nodemailer')
+const sgMail = require('@sendgrid/mail')
+const cron = require('node-cron')
 const moment = require('moment')
 require('dotenv').config()
 
@@ -30,13 +31,8 @@ let data = []
 
 console.log('Starting browser')
 
-// System.setProperty(
-//   'webdriver.chrome.driver',
-//   '/node_modules/chromedriver/lib/chromedriver/chromedriver'
-// )
-
 async function getData(link) {
-  browser = await puppeteer.launch({
+  const browser = await puppeteer.launch({
     // dumpio: true,
     // executablePath: '/usr/bin/chromium-browser',
     args: [
@@ -48,6 +44,8 @@ async function getData(link) {
     ],
     timeout: 30000
   })
+
+  console.log('Cron job started', moment().format('LLLL'))
 
   const page = await browser.newPage()
 
@@ -83,41 +81,40 @@ async function getData(link) {
   })
 
   const developement = {
-    Developement: link,
-    Details: combined
+    Developement: await Object.keys(list).find((key) => list[key] === link),
+    Details: await combined
   }
 
-  data.push(developement)
+  await data.push(developement)
 
-  setTimeout(async () => {
-    await browser.close()
-  }, 60000)
+  setTimeout(async () => {}, 60000)
+
+  await browser.close()
+
+  console.log('Cron job finished', moment().format('LLLL'))
 }
 
 const run = async () => {
-  await Promise.all(Object.values(list).map(async (link) => getData(link)))
+  cron.schedule('*/30 * * * * *', async () => {
+    await Promise.all(Object.values(list).map(async (link) => getData(link)))
 
-  var transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      user: 'karolis.kimtys@gmail.com',
-      pass: process.env.GOOGLE_PASSWORD
+    data = JSON.stringify(data, null, '\t').replace(/[{","}]/g, '')
+
+    sgMail.setApiKey(process.env.SENDGRID_API_KEY)
+    const msg = {
+      to: 'karolis.kimtys@gmail.com',
+      from: 'karolis_k_7@hotmail.com',
+      subject: 'Bloor Homes Developements',
+      text: data
     }
-  })
-
-  var mailOptions = {
-    from: 'Bloor Homes Scraper karolis.kimtys@gmail.com',
-    to: 'karolis.kimtys@gmail.com',
-    subject: 'Bloor Homes Developements',
-    text: JSON.stringify(data, null, '\t')
-  }
-
-  transporter.sendMail(mailOptions, function (error, info) {
-    if (error) {
-      console.log('Error', error)
-    } else {
-      console.log('Email sent: ' + moment().format('LLLL') + info.response)
-    }
+    sgMail
+      .send(msg)
+      .then(() => {
+        console.log('Email sent')
+      })
+      .catch((error) => {
+        console.error(error)
+      })
   })
 }
 

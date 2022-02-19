@@ -9,6 +9,7 @@
   "author": "KK",
   "license": "ISC",
   "dependencies": {
+    "@sendgrid/mail": "^7.6.1",
     "chromium": "^3.0.3",
     "cron": "^1.8.2",
     "dotenv": "^15.0.0",
