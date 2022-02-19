@@ -83,8 +83,6 @@ async function getData(link) {
 
   await data.push(developement)
 
-  setTimeout(async () => {}, 60000)
-
   await browser.close()
 
   console.log('Cron job finished', moment().format('LLLL'))
@@ -92,15 +90,7 @@ async function getData(link) {
 
 const run = async () => {
   cron.schedule('*/30 * * * * *', async () => {
-    await Promise.all(
-      Object.values(list).map(async (link) => {
-        getData(link)
-
-        setTimeout(function () {
-          console.log('Waiting to resolve.')
-        }, 1000)
-      })
-    )
+    await Promise.all(Object.values(list).map(async (link) => getData(link)))
 
     data = JSON.stringify(data, null, '\t').replace(/[{","}]/g, '')
 
