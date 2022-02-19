@@ -92,7 +92,15 @@ async function getData(link) {
 
 const run = async () => {
   cron.schedule('*/30 * * * * *', async () => {
-    await Promise.all(Object.values(list).map(async (link) => getData(link)))
+    await Promise.all(
+      Object.values(list).map(async (link) => {
+        getData(link)
+
+        setTimeout(function () {
+          console.log('Waiting to resolve.')
+        }, 1000)
+      })
+    )
 
     data = JSON.stringify(data, null, '\t').replace(/[{","}]/g, '')
 
