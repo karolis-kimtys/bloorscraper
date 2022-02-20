@@ -29,19 +29,21 @@ const list = {
 
 let data = []
 
-console.log('Starting browser')
-
-async function getData(link) {
-  const browserFetcher = puppeteer.createBrowserFetcher()
+const startBrowser = async () => {
+  let browserFetcher = puppeteer.createBrowserFetcher()
   let revisionInfo = await browserFetcher.download('884014')
 
-  const browser = await puppeteer.launch({
+  let browser = await puppeteer.launch({
     executablePath: revisionInfo.executablePath,
     headless: true,
     args: ['--no-sandbox', '--disabled-setupid-sandbox']
   })
 
-  console.log('Cron job started', moment().format('LLLL'))
+  return browser
+}
+
+const getData = async (link, index, browser) => {
+  console.log(`Job ${index} started`)
 
   const page = await browser.newPage()
 
@@ -83,33 +85,52 @@ async function getData(link) {
 
   await data.push(developement)
 
-  await browser.close()
+  console.log(`Job ${index} completed`, developement)
+}
 
-  console.log('Cron job finished', moment().format('LLLL'))
+const sendMail = async () => {
+  data = JSON.stringify(data, null, '\t').replace(/[{","}]/g, '')
+
+  sgMail.setApiKey(process.env.SENDGRID_API_KEY)
+  const msg = {
+    to: 'karolis.kimtys@gmail.com',
+    from: 'karolis_k_7@hotmail.com',
+    subject: 'Bloor Homes Developements',
+    text: data
+  }
+  sgMail
+    .send(msg)
+    .then(() => {
+      console.log('Email sent at', moment().format('LLLL'))
+    })
+    .catch((error) => {
+      console.error(error)
+    })
+  // startBrowser().then(async (browser) => {
+  //   await browser.close()
+  //   console.log('All browsers closed')
+  // })
 }
 
 const run = async () => {
-  cron.schedule('*/30 * * * * *', async () => {
-    await Promise.all(Object.values(list).map(async (link) => getData(link)))
-
-    data = JSON.stringify(data, null, '\t').replace(/[{","}]/g, '')
-
-    sgMail.setApiKey(process.env.SENDGRID_API_KEY)
-    const msg = {
-      to: 'karolis.kimtys@gmail.com',
-      from: 'karolis_k_7@hotmail.com',
-      subject: 'Bloor Homes Developements',
-      text: data
-    }
-    sgMail
-      .send(msg)
-      .then(() => {
-        console.log('Email sent')
+  startBrowser().then(async (browser) => {
+    const allPromises = new Promise((resolve) => {
+      Object.values(list).map((link, key) => {
+        getData(link, key, browser)
       })
-      .catch((error) => {
-        console.error(error)
-      })
+      setTimeout(() => {
+        resolve()
+      }, 30000)
+    })
+
+    allPromises.then(() => {
+      sendMail(browser)
+      console.log('Finished')
+    })
   })
 }
 
-run()
+cron.schedule('*/5 * * * *', () => {
+  console.log('Starting scraper')
+  run()
+})
