@@ -90,7 +90,7 @@ const getData = async (link, index, browser) => {
     await data.push(developement)
 
     console.log(`Job ${index} completed at`, moment().format('LTS'))
-  }, index * 60000)
+  }, index * 120000)
 }
 
 const sendMail = async () => {
@@ -111,10 +111,10 @@ const sendMail = async () => {
     .catch((error) => {
       console.error(error)
     })
-  // startBrowser().then(async (browser) => {
-  //   await browser.close()
-  //   console.log('All browsers closed')
-  // })
+  startBrowser().then(async (browser) => {
+    await browser.close()
+    console.log('All browsers closed')
+  })
 }
 
 const run = async () => {
