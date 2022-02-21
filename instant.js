@@ -29,7 +29,7 @@ const list = {
 
 let data = []
 
-console.log('Scraper scraper')
+console.log('Scraper started at', moment().format('LLLL'))
 
 const startBrowser = async () => {
   let browserFetcher = puppeteer.createBrowserFetcher()
@@ -37,6 +37,7 @@ const startBrowser = async () => {
 
   let browser = await puppeteer.launch({
     executablePath: revisionInfo.executablePath,
+    timeout: 0,
     headless: true,
     args: ['--no-sandbox', '--disabled-setupid-sandbox']
   })
