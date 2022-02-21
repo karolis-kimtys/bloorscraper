@@ -5,24 +5,24 @@ const moment = require('moment')
 require('dotenv').config()
 
 const list = {
-  TheFairways:
-    'https://bloorhomes.com/developments/berkshire/near-bracknell/the-fairways',
-  OnTheGreen:
-    'https://bloorhomes.com/developments/hampshire/basingstoke/bloor-homes-on-the-green',
-  ThameMeadows:
-    'https://bloorhomes.com/developments/oxfordshire/thame/thame-meadows',
-  LakeSideGardens:
-    'https://bloorhomes.com/developments/berkshire/arborfield/lakeside-gardens',
-  ShinfieldGardens:
-    'https://bloorhomes.com/developments/berkshire/shinfield/shinfield-gardens',
-  ShinfieldMeadows:
-    'https://bloorhomes.com/developments/berkshire/shinfield/shinfield-meadows',
-  AshGreen:
-    'https://bloorhomes.com/developments/surrey/ash-green/bloor-homes-at-ash-green',
-  RedKiteView:
-    'https://bloorhomes.com/developments/oxfordshire/watlington/red-kite-view',
-  WallingfordReach:
-    'https://bloorhomes.com/developments/oxfordshire/crowmarsh-gifford/wallingford-reach',
+  // TheFairways:
+  //   'https://bloorhomes.com/developments/berkshire/near-bracknell/the-fairways',
+  // OnTheGreen:
+  //   'https://bloorhomes.com/developments/hampshire/basingstoke/bloor-homes-on-the-green',
+  // ThameMeadows:
+  //   'https://bloorhomes.com/developments/oxfordshire/thame/thame-meadows',
+  // LakeSideGardens:
+  //   'https://bloorhomes.com/developments/berkshire/arborfield/lakeside-gardens',
+  // ShinfieldGardens:
+  //   'https://bloorhomes.com/developments/berkshire/shinfield/shinfield-gardens',
+  // ShinfieldMeadows:
+  //   'https://bloorhomes.com/developments/berkshire/shinfield/shinfield-meadows',
+  // AshGreen:
+  //   'https://bloorhomes.com/developments/surrey/ash-green/bloor-homes-at-ash-green',
+  // RedKiteView:
+  //   'https://bloorhomes.com/developments/oxfordshire/watlington/red-kite-view',
+  // WallingfordReach:
+  //   'https://bloorhomes.com/developments/oxfordshire/crowmarsh-gifford/wallingford-reach',
   OrielGardens:
     'https://bloorhomes.com/developments/oxfordshire/faringdon/oriel-gardens'
 }
@@ -155,7 +155,7 @@ const sendMail = async () => {
   sgMail.setApiKey(process.env.SENDGRID_API_KEY)
   const msg = {
     to: 'karolis.kimtys@gmail.com',
-    from: 'karolis_k_7@hotmail.com',
+    from: 'karolis.kimtys@gmail.com',
     subject: 'Bloor Homes Developements',
     text: data
   }
@@ -180,7 +180,7 @@ const run = async () => {
         resolve()
         // await browser.close()
         // console.log('All browsers closed')
-      }, 120000)
+      }, 20000)
     })
 
     allPromises.then(() => {
