@@ -145,6 +145,7 @@ const getData = async (link, index, browser) => {
     await page.close()
 
     console.log(` - Job ${index} completed at`, moment().format('LTS'))
+    console.log(`\n`)
   }, index * 10000)
 }
 
