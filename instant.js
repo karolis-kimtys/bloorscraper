@@ -125,7 +125,7 @@ const run = async () => {
       })
       setTimeout(() => {
         resolve()
-      }, 300000)
+      }, 900000)
     })
 
     allPromises.then(() => {
