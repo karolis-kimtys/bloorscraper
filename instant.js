@@ -29,7 +29,7 @@ const list = {
 
 let data = []
 
-const totalTime = Object.keys(list).length * 10000 + 60000
+const totalTime = Object.keys(list).length * 10000 + 60001
 
 const minimal_args = [
   '--autoplay-policy=user-gesture-required',
