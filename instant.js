@@ -167,11 +167,6 @@ const sendMail = async () => {
     .catch((error) => {
       console.error(error)
     })
-
-  startBrowser().then(async (browser) => {
-    await browser.close()
-    console.log('All browsers closed')
-  })
 }
 
 const run = async () => {
@@ -180,9 +175,11 @@ const run = async () => {
       Object.values(list).map((link, key) => {
         getData(link, key, browser)
       })
-      setTimeout(() => {
+      setTimeout(async () => {
         resolve()
-      }, 60000)
+        // await browser.close()
+        // console.log('All browsers closed')
+      }, 120000)
     })
 
     allPromises.then(() => {
