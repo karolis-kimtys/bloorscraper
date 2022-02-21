@@ -29,6 +29,8 @@ const list = {
 
 let data = []
 
+console.log('Scraper scraper')
+
 const startBrowser = async () => {
   let browserFetcher = puppeteer.createBrowserFetcher()
   let revisionInfo = await browserFetcher.download('884014')
@@ -43,49 +45,51 @@ const startBrowser = async () => {
 }
 
 const getData = async (link, index, browser) => {
-  console.log(`Job ${index} started`)
+  setTimeout(async () => {
+    console.log(`Job ${index} started`)
 
-  const page = await browser.newPage()
+    const page = await browser.newPage()
 
-  await page.goto(link, {
-    waitUntil: 'networkidle2'
-  })
+    await page.goto(link, {
+      waitUntil: 'networkidle2'
+    })
 
-  const title = await page.evaluate(() =>
-    Array.from(
-      document.querySelectorAll('.o-development-homes__card__header'),
-      (element) => element.textContent
+    const title = await page.evaluate(() =>
+      Array.from(
+        document.querySelectorAll('.o-development-homes__card__header'),
+        (element) => element.textContent
+      )
     )
-  )
 
-  const body = await page.evaluate(() =>
-    Array.from(
-      document.querySelectorAll('.o-development-homes__card__body'),
-      (element) => element.textContent
+    const body = await page.evaluate(() =>
+      Array.from(
+        document.querySelectorAll('.o-development-homes__card__body'),
+        (element) => element.textContent
+      )
     )
-  )
 
-  const combined = await title.map(function (title, index) {
-    return {
-      title: title,
-      details: body[index]
-        .split('\n')
-        .join('-')
-        .split(' ')
-        .join('')
-        .split('-')
-        .join(' ')
+    const combined = await title.map(function (title, index) {
+      return {
+        title: title,
+        details: body[index]
+          .split('\n')
+          .join('-')
+          .split(' ')
+          .join('')
+          .split('-')
+          .join(' ')
+      }
+    })
+
+    const developement = {
+      Developement: await Object.keys(list).find((key) => list[key] === link),
+      Details: await combined
     }
-  })
 
-  const developement = {
-    Developement: await Object.keys(list).find((key) => list[key] === link),
-    Details: await combined
-  }
+    await data.push(developement)
 
-  await data.push(developement)
-
-  console.log(`Job ${index} completed`, developement)
+    console.log(`Job ${index} completed`)
+  }, index * 2000)
 }
 
 const sendMail = async () => {
@@ -130,7 +134,9 @@ const run = async () => {
   })
 }
 
+// run()
+
 cron.schedule('*/5 * * * *', () => {
-  console.log('Starting scraper')
+  console.log('Cron scraper')
   run()
 })
