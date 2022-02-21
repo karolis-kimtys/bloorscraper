@@ -29,19 +29,61 @@ const list = {
 
 let data = []
 
-console.log('Scraper started on', moment().format('LLLL'))
+const minimal_args = [
+  '--autoplay-policy=user-gesture-required',
+  '--disable-background-networking',
+  '--disable-background-timer-throttling',
+  '--disable-backgrounding-occluded-windows',
+  '--disable-breakpad',
+  '--disable-client-side-phishing-detection',
+  '--disable-component-update',
+  '--disable-default-apps',
+  '--disable-dev-shm-usage',
+  '--disable-domain-reliability',
+  '--disable-extensions',
+  '--disable-features=AudioServiceOutOfProcess',
+  '--disable-hang-monitor',
+  '--disable-ipc-flooding-protection',
+  '--disable-notifications',
+  '--disable-offer-store-unmasked-wallet-cards',
+  '--disable-popup-blocking',
+  '--disable-print-preview',
+  '--disable-prompt-on-repost',
+  '--disable-renderer-backgrounding',
+  '--disable-setuid-sandbox',
+  '--disable-speech-api',
+  '--disable-sync',
+  '--hide-scrollbars',
+  '--ignore-gpu-blacklist',
+  '--metrics-recording-only',
+  '--mute-audio',
+  '--no-default-browser-check',
+  '--no-first-run',
+  '--no-pings',
+  '--no-sandbox',
+  '--no-zygote',
+  '--password-store=basic',
+  '--use-gl=swiftshader',
+  '--use-mock-keychain',
+  '--no-sandbox',
+  '--disabled-setupid-sandbox'
+]
+
+console.log('Scraper started on', moment().format('LTS'))
 
 const startBrowser = async () => {
+  console.log('Browser started at', moment().format('LTS'))
   let browserFetcher = puppeteer.createBrowserFetcher()
   let revisionInfo = await browserFetcher.download('884014')
 
   let browser = await puppeteer.launch({
+    userDataDir: './Cache',
     executablePath: revisionInfo.executablePath,
     timeout: 0,
     headless: true,
-    args: ['--no-sandbox', '--disabled-setupid-sandbox']
+    args: minimal_args
   })
-
+  console.log('Browser launched at', moment().format('LTS'))
   return browser
 }
 
@@ -51,6 +93,17 @@ const getData = async (link, index, browser) => {
 
     const page = await browser.newPage()
     await page.setDefaultNavigationTimeout(0)
+    //turns request interceptor on
+    await page.setRequestInterception(true)
+
+    //if the page makes a  request to a resource type of image then abort that request
+    page.on('request', (request) => {
+      request.resourceType() === 'image' ||
+      request.resourceType() === 'stylesheet'
+        ? request.abort()
+        : request.continue()
+    })
+
     await page.goto(link, {
       waitUntil: 'networkidle2'
     })
@@ -89,8 +142,10 @@ const getData = async (link, index, browser) => {
 
     await data.push(developement)
 
+    await page.close()
+
     console.log(` - Job ${index} completed at`, moment().format('LTS'))
-  }, index * 300000)
+  }, index * 10000)
 }
 
 const sendMail = async () => {
@@ -103,17 +158,20 @@ const sendMail = async () => {
     subject: 'Bloor Homes Developements',
     text: data
   }
+
   sgMail
     .send(msg)
     .then(() => {
-      console.log('Email sent at', moment().format('LLLL'))
+      console.log('Email sent at', moment().format('LTS'))
     })
     .catch((error) => {
       console.error(error)
     })
+
   startBrowser().then(async (browser) => {
     await browser.close()
     console.log('All browsers closed')
+    process.exit(1)
   })
 }
 
@@ -125,7 +183,7 @@ const run = async () => {
       })
       setTimeout(() => {
         resolve()
-      }, 3600000)
+      }, 300000)
     })
 
     allPromises.then(() => {
@@ -135,9 +193,9 @@ const run = async () => {
   })
 }
 
-// run()
+run()
 
-cron.schedule('0 */2 * * *', () => {
-  console.log('Cron scraper')
-  run()
-})
+// cron.schedule('0 */2 * * *', () => {
+//   console.log('Cron scraper')
+//   run()
+// })
