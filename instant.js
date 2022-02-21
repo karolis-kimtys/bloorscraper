@@ -90,7 +90,7 @@ const getData = async (link, index, browser) => {
     await data.push(developement)
 
     console.log(`Job ${index} completed at`, moment().format('LTS'))
-  }, index * 2000)
+  }, index * 10000)
 }
 
 const sendMail = async () => {
@@ -125,7 +125,7 @@ const run = async () => {
       })
       setTimeout(() => {
         resolve()
-      }, 120000)
+      }, 300000)
     })
 
     allPromises.then(() => {
@@ -137,7 +137,7 @@ const run = async () => {
 
 run()
 
-// cron.schedule('*/5 * * * *', () => {
+// cron.schedule('*/60 * * * *, () => {
 //   console.log('Cron scraper')
 //   run()
 // })
