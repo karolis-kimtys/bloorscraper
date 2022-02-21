@@ -47,7 +47,7 @@ const startBrowser = async () => {
 
 const getData = async (link, index, browser) => {
   setTimeout(async () => {
-    console.log(`Job ${index} started at`, moment().format('LTS'))
+    console.log(` + Job ${index} started at`, moment().format('LTS'))
 
     const page = await browser.newPage()
     await page.setDefaultNavigationTimeout(0)
@@ -89,8 +89,8 @@ const getData = async (link, index, browser) => {
 
     await data.push(developement)
 
-    console.log(`Job ${index} completed at`, moment().format('LTS'))
-  }, index * 210000)
+    console.log(` - Job ${index} completed at`, moment().format('LTS'))
+  }, index * 300000)
 }
 
 const sendMail = async () => {
@@ -125,7 +125,7 @@ const run = async () => {
       })
       setTimeout(() => {
         resolve()
-      }, 2700000)
+      }, 3600000)
     })
 
     allPromises.then(() => {
@@ -135,9 +135,9 @@ const run = async () => {
   })
 }
 
-run()
+// run()
 
-// cron.schedule('*/60 * * * *', () => {
-//   console.log('Cron scraper')
-//   run()
-// })
+cron.schedule('0 */2 * * *', () => {
+  console.log('Cron scraper')
+  run()
+})
