@@ -125,7 +125,7 @@ const run = async () => {
       })
       setTimeout(() => {
         resolve()
-      }, 900000)
+      }, 1200000)
     })
 
     allPromises.then(() => {
@@ -135,9 +135,9 @@ const run = async () => {
   })
 }
 
-run()
+// run()
 
-// cron.schedule('*/60 * * * *, () => {
-//   console.log('Cron scraper')
-//   run()
-// })
+cron.schedule('*/60 * * * *', () => {
+  console.log('Cron scraper')
+  run()
+})
