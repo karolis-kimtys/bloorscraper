@@ -95,10 +95,9 @@ const getData = async (link, index, browser) => {
 
     const page = await browser.newPage()
     await page.setDefaultNavigationTimeout(0)
-    //turns request interceptor on
+
     await page.setRequestInterception(true)
 
-    //if the page makes a  request to a resource type of image then abort that request
     page.on('request', (request) => {
       request.resourceType() === 'image' ||
       request.resourceType() === 'stylesheet'
@@ -144,7 +143,7 @@ const getData = async (link, index, browser) => {
 
     await data.push(developement)
 
-    await page.close()
+    // await page.close()
 
     console.log(` - Job ${index} completed at`, moment().format('LTS'))
     console.log(`\n`)
