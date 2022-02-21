@@ -171,7 +171,6 @@ const sendMail = async () => {
   startBrowser().then(async (browser) => {
     await browser.close()
     console.log('All browsers closed')
-    process.exit(1)
   })
 }
 
@@ -183,7 +182,7 @@ const run = async () => {
       })
       setTimeout(() => {
         resolve()
-      }, 300000)
+      }, 60000)
     })
 
     allPromises.then(() => {
