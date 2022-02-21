@@ -49,10 +49,8 @@ const getData = async (link, index, browser) => {
   setTimeout(async () => {
     console.log(`Job ${index} started`)
 
-    await page.setDefaultNavigationTimeout(0)
-
     const page = await browser.newPage()
-
+    await page.setDefaultNavigationTimeout(0)
     await page.goto(link, {
       waitUntil: 'networkidle2'
     })
