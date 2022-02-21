@@ -47,7 +47,7 @@ const startBrowser = async () => {
 
 const getData = async (link, index, browser) => {
   setTimeout(async () => {
-    console.log(`Job ${index} started`)
+    console.log(`Job ${index} started at`, moment().format('LTS'))
 
     const page = await browser.newPage()
     await page.setDefaultNavigationTimeout(0)
@@ -89,7 +89,7 @@ const getData = async (link, index, browser) => {
 
     await data.push(developement)
 
-    console.log(`Job ${index} completed`)
+    console.log(`Job ${index} completed at`, moment().format('LTS'))
   }, index * 2000)
 }
 
@@ -125,7 +125,7 @@ const run = async () => {
       })
       setTimeout(() => {
         resolve()
-      }, 60000)
+      }, 120000)
     })
 
     allPromises.then(() => {
