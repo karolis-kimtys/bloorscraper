@@ -90,7 +90,7 @@ const getData = async (link, index, browser) => {
     await data.push(developement)
 
     console.log(`Job ${index} completed at`, moment().format('LTS'))
-  }, index * 10000)
+  }, index * 30000)
 }
 
 const sendMail = async () => {
