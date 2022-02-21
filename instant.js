@@ -156,7 +156,7 @@ const sendMail = async () => {
 
   sgMail.setApiKey(process.env.SENDGRID_API_KEY)
   const msg = {
-    to: 'karolis.kimtys@gmail.com',
+    to: ['karolis.kimtys@gmail.com', 'karolis.kimtys@gmail.com'],
     from: 'karolis.kimtys@gmail.com',
     subject: 'Bloor Homes Developements',
     text: data
@@ -192,9 +192,9 @@ const run = async () => {
   })
 }
 
-run()
+// run()
 
-// cron.schedule('0 */2 * * *', () => {
-//   console.log('Cron scraper')
-//   run()
-// })
+cron.schedule('0 * * * *', () => {
+  console.log('Cron started at', moment().format('LTS'))
+  run()
+})
