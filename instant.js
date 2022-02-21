@@ -29,7 +29,7 @@ const list = {
 
 let data = []
 
-console.log('Scraper started at', moment().format('LLLL'))
+console.log('Scraper started on', moment().format('LLLL'))
 
 const startBrowser = async () => {
   let browserFetcher = puppeteer.createBrowserFetcher()
@@ -135,9 +135,9 @@ const run = async () => {
   })
 }
 
-// run()
+run()
 
-cron.schedule('*/5 * * * *', () => {
-  console.log('Cron scraper')
-  run()
-})
+// cron.schedule('*/5 * * * *', () => {
+//   console.log('Cron scraper')
+//   run()
+// })
