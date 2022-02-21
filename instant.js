@@ -145,7 +145,7 @@ const getData = async (link, index, browser) => {
 
     await data.push(developement)
 
-    // await page.close()
+    await page.close()
 
     console.log(` - Job ${index} completed at`, moment().format('LTS'))
   }, index * singleFetchTime)
@@ -153,8 +153,6 @@ const getData = async (link, index, browser) => {
 
 const sendMail = async () => {
   data = JSON.stringify(data, null, '\t').replace(/[{","}]/g, '')
-
-  console.log('🚀 - file: instant.js - line 159 - data', data)
 
   sgMail.setApiKey(process.env.SENDGRID_API_KEY)
   const msg = {
