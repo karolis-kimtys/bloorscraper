@@ -5,24 +5,24 @@ const moment = require('moment')
 require('dotenv').config()
 
 const list = {
-  TheFairways:
-    'https://bloorhomes.com/developments/berkshire/near-bracknell/the-fairways',
-  OnTheGreen:
-    'https://bloorhomes.com/developments/hampshire/basingstoke/bloor-homes-on-the-green',
-  ThameMeadows:
-    'https://bloorhomes.com/developments/oxfordshire/thame/thame-meadows',
-  LakeSideGardens:
-    'https://bloorhomes.com/developments/berkshire/arborfield/lakeside-gardens',
-  ShinfieldGardens:
-    'https://bloorhomes.com/developments/berkshire/shinfield/shinfield-gardens',
-  ShinfieldMeadows:
-    'https://bloorhomes.com/developments/berkshire/shinfield/shinfield-meadows',
-  AshGreen:
-    'https://bloorhomes.com/developments/surrey/ash-green/bloor-homes-at-ash-green',
-  RedKiteView:
-    'https://bloorhomes.com/developments/oxfordshire/watlington/red-kite-view',
-  WallingfordReach:
-    'https://bloorhomes.com/developments/oxfordshire/crowmarsh-gifford/wallingford-reach',
+  // TheFairways:
+  //   'https://bloorhomes.com/developments/berkshire/near-bracknell/the-fairways',
+  // OnTheGreen:
+  //   'https://bloorhomes.com/developments/hampshire/basingstoke/bloor-homes-on-the-green',
+  // ThameMeadows:
+  //   'https://bloorhomes.com/developments/oxfordshire/thame/thame-meadows',
+  // LakeSideGardens:
+  //   'https://bloorhomes.com/developments/berkshire/arborfield/lakeside-gardens',
+  // ShinfieldGardens:
+  //   'https://bloorhomes.com/developments/berkshire/shinfield/shinfield-gardens',
+  // ShinfieldMeadows:
+  //   'https://bloorhomes.com/developments/berkshire/shinfield/shinfield-meadows',
+  // AshGreen:
+  //   'https://bloorhomes.com/developments/surrey/ash-green/bloor-homes-at-ash-green',
+  // RedKiteView:
+  //   'https://bloorhomes.com/developments/oxfordshire/watlington/red-kite-view',
+  // WallingfordReach:
+  //   'https://bloorhomes.com/developments/oxfordshire/crowmarsh-gifford/wallingford-reach',
   OrielGardens:
     'https://bloorhomes.com/developments/oxfordshire/faringdon/oriel-gardens'
 }
