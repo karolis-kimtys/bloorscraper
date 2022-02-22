@@ -192,9 +192,9 @@ const run = async () => {
   })
 }
 
-// run()
+run()
 
-cron.schedule('15 * * * *', () => {
-  console.log('Cron started at', moment().format('LTS'))
-  run()
-})
+// cron.schedule('15 * * * *', () => {
+//   console.log('Cron started at', moment().format('LTS'))
+//   run()
+// })
