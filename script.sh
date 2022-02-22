@@ -1,0 +1,1 @@
+/root/.nvm/versions/node/v17.5.0/bin/node /root/bloorscraper/index.js
